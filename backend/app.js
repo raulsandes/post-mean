@@ -2,15 +2,27 @@ const express = require('express');
 
 const app = express();
 
-app.use((req, res, next) => {
-    console.log('Hello');
-    // res.send('Hi');
-    next(); 
+app.use("/api/posts" ,(req, res, next) => {
+    const posts = [
+        {
+            id: "asdasdfa",
+            title:"First server-side post",
+            content:"This is coming from the server"
+        },
+        {
+            id: "agdergeasd",
+            title:"Second server-side post",
+            content:"This is also coming from the server"
+        }
+    ];
 
-});
+    res.status(200).json({
+        message: "Posts fetched sucessfully",
+        posts: posts
+    });
 
-app.use((req, res, next) => {
-    res.send('Hello, after first console');
+    console.log(posts)
+
 });
 
 module.exports = app;
