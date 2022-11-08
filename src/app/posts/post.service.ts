@@ -26,10 +26,10 @@ export class PostService {
   }
 
   addPost(title: string, content: string) {
-    const post: Post = { id: '', title: title, content: content };
-    this.http.post<{ message: string, posts: Post[] }>('http://localhost:3000/api/posts', post)
+    const post: Post = { id: null, title: title, content: content };
+    this.http.post<{ message: string }>('http://localhost:3000/api/posts', post)
       .subscribe((postData) => {
-        console.log('post-data', postData);
+        console.log('post-data', postData.message);
         this.posts.push(post);
         this.postsUpdated.next([...this.posts]);
       });
