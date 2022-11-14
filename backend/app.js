@@ -30,37 +30,47 @@ app.use((req, res, next) => {
 });
 app.post("/api/posts", (req, res, next) => {
     const post = new Post({
-        title:   req.body.title,
+        title: req.body.title,
         content: req.body.content
     });
-    console.log(post)
-    post.save();
-    res.status(201).json({
-        message: "Post added sucessfully!"
+    console.log('post', post)
+    post.save().then(createdPost => {
+        console.log('createdPost', createdPost)
+        res.status(201).json({
+            message: "Post added sucessfully!",
+            postId: createdPost._id,
+        });
+        console.log('createdPost', createdPost)
     });
 });
 
+app.put("/api/posts/:id", (req, res, next) => {
+    const post = new Post({
+        title: req.body.title,
+        content: req.body.content
+    })
+    Post.updateOne({ _id: req.params.id }, post).then((result) => {
+        console.log(result);
+        res.status(200).json({message: "Update sucessful!"})
+    })
+})
+
 app.get("/api/posts", (req, res, next) => {
-    const posts = [
-        {
-            id: "asdasdfa",
-            title: "First server-side post",
-            content: "This is coming from the server"
-        },
-        {
-            id: "agdergeasd",
-            title: "Second server-side post",
-            content: "This is also coming from the server"
-        }
-    ];
-
-    res.status(200).json({
-        message: "Posts fetched sucessfully",
-        posts: posts
+    Post.find().then(documents => {
+        console.log('documents', documents);
+        res.status(200).json({
+            message: "Posts fetched sucessfully",
+            posts: documents
+        });
     });
+});
 
-    console.log(posts)
-
+app.delete("/api/posts/:id", (req, res, next) => {
+    Post.deleteOne({ _id: req.params.id }).then(result => {
+        console.log('result', result);
+    })
+    console.log(req.params.id);
+    res.status(200).json({ message: 'Post deleted!' })
 });
 
 
