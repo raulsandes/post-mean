@@ -24,7 +24,7 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     //Quais são os métodos que a conexão pode realizar na API
-    res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE, PUT, OPTIONS");
     // app.use(cors());
     next();
 });
@@ -46,12 +46,13 @@ app.post("/api/posts", (req, res, next) => {
 
 app.put("/api/posts/:id", (req, res, next) => {
     const post = new Post({
+        _id: req.body.id,
         title: req.body.title,
         content: req.body.content
     })
     Post.updateOne({ _id: req.params.id }, post).then((result) => {
         console.log(result);
-        res.status(200).json({message: "Update sucessful!"})
+        res.status(200).json({ message: "Update sucessful!" })
     })
 })
 
@@ -63,6 +64,16 @@ app.get("/api/posts", (req, res, next) => {
             posts: documents
         });
     });
+});
+
+app.get("/api/posts/:id", (req, res, next) => {
+    Post.findById(req.params.id).then(post => {
+        if (post) {
+            res.status(200).json(post);
+        } else {
+            res.status(404).json({ message: 'Post not found!' });
+        }
+    })
 });
 
 app.delete("/api/posts/:id", (req, res, next) => {
