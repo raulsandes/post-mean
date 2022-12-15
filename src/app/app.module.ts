@@ -7,6 +7,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 
@@ -38,6 +39,7 @@ import { HeaderComponent } from './header/header.component';
     FormsModule,                            
     ReactiveFormsModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
     MatToolbarModule
   ],
   providers: [],
